@@ -99,14 +99,14 @@
         alt: 0,
         type: "start",
         timestamp: Date.now()
-      }
+      };
 
       // TODO:
       $.ajax({
         type: "POST",
         contentType: "application/json",
         url: "http://splunk.hochit.com:8888/cgi-bin/edgeconnect.pl",
-        data: JSON.parse(data),
+        data: data,
         success: success,
         dataType: "json"
       });
