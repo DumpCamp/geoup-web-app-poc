@@ -102,14 +102,14 @@
       }
 
       // TODO:
-      // $.ajax({
-      //   type: "POST",
-      //   contentType: "application/json",
-      //   url: url,
-      //   data: JSON.parse(data),
-      //   success: success,
-      //   dataType: "json"
-      // });
+      $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "http://splunk.hochit.com:8888/cgi-bin/edgeconnect.pl",
+        data: JSON.parse(data),
+        success: success,
+        dataType: "json"
+      });
       console.log(data);
 
       $("#longitude span").text(longitude);
