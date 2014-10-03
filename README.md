@@ -1,4 +1,4 @@
 geoup-web-app-poc
 =================
 
-Simple static web for pushing geolocation data to backend server.
+Simple static html5 web for pushing geolocation data to backend server.
