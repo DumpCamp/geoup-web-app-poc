@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GeoUp</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+<body>
+  <div id="user">
+    <select>
+      <option value="none">Who are you?</option>
+      <option value="bob">bob</option>
+      <option value="franz">Franz</option>
+      <option value="jumbo">Jumbo</option>
+      <option value="kit">Kit</option>
+      <option value="patrick">Patrick</option>
+      <option value="philip">Philip</option>
+      <option value="ronnie">Ronnie</option>
+      <option value="steve">Steve</option>
+      <option value="twinsen">Twinsen</option>
+      <option value="weber">Weber</option>
+      <option value="wyman">Wyman</option>
+    </select>
+  </div>
+  <div id="event">
+    <select>
+      <option value="none">Which event?</option>
+      <option value="marathon">Marathon</option>
+      <option value="occupy_central">Occupy Central</option>
+      <option value="occupy_admiralty">Occupy Admiralty</option>
+    </select>
+  </div>
+  <div id="interval">
+    <select>
+      <option value="60000">1 min</option>
+      <option value="300000">5 mins</option>
+      <option value="600000">10 mins</option>
+      <option value="900000">15 mins</option>
+      <option value="5000">5 seconds</option>
+    </select>
+  </div>
+  <div id="location">
+    <div id="longitude">Longitude: <span></span></div>
+    <div id="latitude">Latitude: <span></span></div>
+    <div id="altitude">Altitude: <span>0</span></div>
+  </div>
+  <div id="control">
+    <button id="controlBtn" class="isStopped">Start</button>
+  </div>
+  <script type="text/javascript">
+    var intervalId;
+    var geolocation = navigator.geolocation;
+
+    if (geolocation) {
+      console.log("Geolocation is supported");
+    } else {
+      console.log("Geolocation is not supported");
+    }
+
+    $("#controlBtn").click(controlBtnClicked);
+
+    function controlBtnClicked() {
+      if ($("#user select").val() == "none") {
+        alert("Please select who you are!");
+      } else if ($("#event select").val() == "none") {
+        alert("Please select an event!");
+      } else {
+        var $this = $(this);
+        if ($this.hasClass("isStopped")) {
+          startPushing();
+          $this.text("Done");
+        } else {
+          stopPushing();
+          $this.text("Start");
+        }
+        $this.toggleClass("isStopped");
+      }
+    }
+
+    function startPushing() {
+      intervalId = setInterval("geolocation.getCurrentPosition(showLocation, errorHandler)", $("#interval select").val());
+      $("#user select").attr("disabled", "disabled");
+      $("#event select").attr("disabled", "disabled");
+    }
+
+    function stopPushing() {
+      $("#user select").removeAttr("disabled");
+      $("#event select").removeAttr("disabled");
+      clearInterval(intervalId);
+    }
+
+    function showLocation(position) {
+      var longitude = position.coords.longitude;
+      var latitude = position.coords.latitude;
+      var data = {
+        device_id: $("#user select").val(),
+        event_id: $("#event select").val(),
+        long: longitude,
+        lat: latitude,
+        alt: 0,
+        type: "start",
+        timestamp: Date.now()
+      }
+
+      // TODO:
+      // $.ajax({
+      //   type: "POST",
+      //   contentType: "application/json",
+      //   url: url,
+      //   data: JSON.parse(data),
+      //   success: success,
+      //   dataType: "json"
+      // });
+      console.log(data);
+
+      $("#longitude span").text(longitude);
+      $("#latitude span").text(latitude);
+    }
+
+    function success() {
+      // TODO:
+    }
+
+    function errorHandler(err) {
+      console.log(err.code);
+    }
+  </script>
+</body>
+</html>
