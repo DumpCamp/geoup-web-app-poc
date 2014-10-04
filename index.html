@@ -106,7 +106,7 @@
         type: "POST",
         contentType: "application/json",
         url: "http://splunk.hochit.com:8888/cgi-bin/edgeconnect.pl",
-        data: data,
+        data: JSON.stringify(data),
         success: success,
         dataType: "json"
       });
